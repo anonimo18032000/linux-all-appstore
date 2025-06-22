@@ -1,0 +1,62 @@
+name: filebrowser
+services:
+  filebrowser:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: filebrowser/filebrowser:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8003"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/db
+        target: /db
+      - type: bind
+        source: /DATA
+        target: /srv
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: FileBrowser
+x-casaos:
+  architectures:
+    - amd64
+  main: filebrowser
+  author: DanielSantos
+  category: Utilities
+  developer: DanielSantos
+  store_app_id: filebrowser
+  port_map: "8003"
+  description:
+    pt_br:
+      File Browser - Navegador de arquivos Webbased que inclui funções de compartilhamento, etc.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/FileBrowser/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/FileBrowser/screenshot-1.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/FileBrowser/screenshot-2.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/FileBrowser/screenshot-3.jpg
+  tagline:
+    pt_br: Faça upload, exclua, visualize, renomeie, edite e compartilhe seus arquivos.
+            Senha padrão 'admin'
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/FileBrowser/thumbnail.jpg
+  title:
+    custom: ""
+    pt_br: FileBrowser

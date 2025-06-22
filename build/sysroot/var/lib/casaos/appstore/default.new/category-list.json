@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Utilities",
+    "font": "toolbox-outline",
+    "description": "Utilities Apps"
+  },
+  {
+    "name": "Cloud",
+    "font": "cloud-outline",
+    "description": "Public cloud alternatives or enhanced Apps"
+  },
+  {
+    "name": "Database",
+    "font": "database-the-application",
+    "description": "Database Apps"
+  },
+  {
+    "name": "WEB",
+    "font": "web",
+    "description": "WEB Apps"
+  },
+  {
+    "name": "Network",
+    "font": "lan",
+    "description": "Network Apps"
+  },
+  {
+    "name": "Downloader",
+    "font": "tray-arrow-down",
+    "description": "Downloader Apps"
+  }
+  ,
+  {
+    "name": "Backup",
+    "font": "backup-restore",
+    "description": "File and Data Backup Apps"
+  }
+]

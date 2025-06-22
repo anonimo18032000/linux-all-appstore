@@ -1,0 +1,69 @@
+name: casaos
+services:
+  casaos:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: dockurr/casa:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 8080
+        published: "8002"
+        protocol: tcp
+    restart: always
+    privileged: true
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID
+        target: /DATA
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    stop_grace_period: 1m
+
+    x-casaos:
+      ports:
+        - container: "8080"
+          description:
+            pt_br: Porta HTTP WebUI.
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: CasaOS
+
+x-casaos:
+  architectures:
+    - amd64
+  main: casaos
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: casaos
+  port_map: "8002"
+  description:
+    pt_br: Software de código aberto baseado na comunidade focado em fornecer uma experiência simples e pessoal na nuvem em volta Ecossistema Docker.
+          CasaOS é totalmente compatível com o ecossistema de contêineres Docker, com um grande número de aplicativos para escolher
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/CasaOS/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/CasaOS/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/CasaOS/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/CasaOS/screenshot-3.png
+  tagline:
+    pt_br: CasaOS dentro de um contêiner Docker.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/CasaOS/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: CasaOS

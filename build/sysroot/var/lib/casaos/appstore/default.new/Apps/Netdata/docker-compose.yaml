@@ -1,0 +1,95 @@
+name: netdata
+services:
+  netdata:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: netdata/netdata:stable
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 19999
+        published: "8008"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/Netdata/config
+        target: /etc/netdata
+      - type: bind
+        source: /DATA/AppData/Netdata/lib
+        target: /var/lib/netdata
+      - type: bind
+        source: /DATA/AppData/Netdata/cache
+        target: /var/cache/netdata
+      - type: bind
+        source: /etc/passwd
+        target: /host/etc/passwd
+      - type: bind
+        source: /etc/group
+        target: /host/etc/group
+      - type: bind
+        source: /proc
+        target: /host/proc
+      - type: bind
+        source: /sys
+        target: /host/sys
+      - type: bind
+        source: /etc/os-release
+        target: /host/etc/os-release
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    x-casaos:
+      ports:
+        - container: "19999"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: Execute o Netdata conforme especificado pela ID do usuário
+        - container: PGID
+          description:
+            pt_br: Execute o Netdata conforme especificado pela ID do Groupo
+    container_name: Netdata
+x-casaos:
+  architectures:
+    - amd64
+  main: netdata
+  author: DanielSantos
+  category: Utilities
+  developer: Netdata
+  store_app_id: netdata
+  port_map: "8008"
+  description:
+    pt_br: Netdata é uma plataforma de observabilidade local, nativa da nuvem e de alto desempenho,
+     projetada para monitorar métricas e logs com eficiência incomparável. Ele oferece uma abordagem 
+     mais simples, rápida e significativamente mais fácil para monitoramento em tempo real e de baixa
+     latência para sistemas, contêineres e aplicativos.
+      O que diferencia a Netdata é seu design distribuído e econômico . Ao contrário das soluções tradicionais
+      de monitoramento que centralizam os dados, o Netdata distribui o código . Em vez de canalizar todos os 
+      dados para alguns bancos de dados centrais, a Netdata processa os dados na borda, mantendo-os 
+      próximos à fonte. O Netdata Agent inteligente de código aberto atua como um banco de dados distribuído, 
+      permitindo a construção de pipelines de observabilidade complexos com simplicidade modular semelhante à do Lego.
+      A Netdata também incorpora insights de IA para todos os dados monitorados, treinando modelos de aprendizado de máquina
+      diretamente na borda. Isso permite a detecção de anomalias totalmente automatizada e não supervisionada e, com as APIs 
+      e UIs fornecidas, os usuários podem detectar correlações rapidamente e obter insights mais profundos. 
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Netdata/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Netdata/screenshot-1.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Netdata/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Netdata/screenshot-3.png
+  tagline:
+    pt_br: Monitoramento de desempenho em tempo real
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Netdata/screenshot-3.png
+  title:
+    custom: ""
+    pt_br: Netdata

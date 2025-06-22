@@ -1,0 +1,67 @@
+name: uptimekuma
+services:
+  uptimekuma:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: louislam/uptime-kuma:1.23.15-alpine
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 3001
+        published: "8022"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID
+        target: /app/data
+    x-casaos:
+      ports:
+        - container: "3001"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /app/data
+          description:
+            pt_br: Diretório de dados do UptimeKuma.
+    container_name: UptimeKuma
+x-casaos:
+  architectures:
+    - amd64
+  main: uptimekuma
+  author: DanielSantos
+  category: Network
+  developer: UptimeKuma
+  store_app_id: uptimekuma
+  port_map: "8022"
+  description:
+    pt_br: É uma ferramenta de monitoramento auto-hospedada como "Uptime Robot".
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/screenshot-1.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/screenshot-2.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/screenshot-3.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/screenshot-4.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/screenshot-5.jpg
+  tagline:
+    pt_br: Uma ferramenta de monitoramento elegante
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/UptimeKuma/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: UptimeKuma

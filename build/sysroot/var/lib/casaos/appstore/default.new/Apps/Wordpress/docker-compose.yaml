@@ -1,0 +1,90 @@
+name: wordpress
+services:
+  wordpress:
+    environment:
+      PHP_MEMORY_LIMIT: '1G'
+      PHP_UPLOAD_MAX_FILESIZE: '8G'
+      PHP_POST_MAX_SIZE: '8G'
+      PHP_MAX_EXECUTION_TIME: '80'
+      BUFFER: '40'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: anonimo18032000/wordpress:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 1G
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8023"
+        protocol: tcp
+      - target: 443
+        published: "8024"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/www
+        target: /var/www/wordpress
+      - type: bind
+        source: /DATA/AppData/$AppID/ssl
+        target: /etc/apache2/ssl
+      - type: bind
+        source: /DATA/AppData/$AppID/apache-config
+        target: /etc/apache2/sites-available
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+        - container: "443"
+          description:
+            pt_br: Porta HTTPS WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /var/www/wordpress
+          description:
+            pt_br: Diretório do Wordpress.
+    container_name: Wordpress
+x-casaos:
+  architectures:
+    - amd64
+  main: wordpress
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: wordpress
+  port_map: "8024"
+  scheme: https
+  description:
+    pt_br: O WordPress (também conhecido como WP ou WordPress.org) é um sistema de gerenciamento de conteúdo da web.
+     Ele foi criado originalmente como uma ferramenta para publicar blogs, 
+     mas evoluiu para oferecer suporte à publicação de outros conteúdos da web, 
+     incluindo sites mais tradicionais, listas de discussão e fóruns da Internet, 
+     galerias de mídia, sites de membros, sistemas de gerenciamento de aprendizagem e lojas online.
+     Disponível como software gratuito e de código aberto, 
+     o WordPress está entre os sistemas de gerenciamento de conteúdo mais 
+     populares – ele foi usado por 43,1% dos 10 milhões de principais sites em dezembro de 2023. 
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Wordpress/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Wordpress/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Wordpress/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Wordpress/screenshot-3.png
+  tagline:
+    pt_br: Sistema de Blog Famoso
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Wordpress/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: Wordpress

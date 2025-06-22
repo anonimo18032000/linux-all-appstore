@@ -1,0 +1,86 @@
+name: mariadb
+services:
+  mariadb:
+    environment:
+      MYSQL_DATABASE: 'casaos'
+      MYSQL_USER: 'casaos'
+      MYSQL_PASSWORD: 'casaos'
+      MYSQL_ROOT_PASSWORD: 'casaos'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: mariadb:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 256M
+    network_mode: bridge
+    ports:
+      - target: 3306
+        published: "3306"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID
+        target: /var/lib/mysql
+    x-casaos:
+      ports:
+        - container: "3306"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: MYSQL_DATABASE
+          description:
+            pt_br: Especifique o nome de um banco de dados a ser criado na inicialização da imagem.
+        - container: MYSQL_USER
+          description:
+            pt_br: Este usuário terá acesso de superusuário ao banco de dados especificado por MYSQL_DATABASE (não use root aqui).
+        - container: MYSQL_PASSWORD
+          description:
+            pt_br: Defina isso como a senha que você deseja usar para seu MYSQL_USER (mínimo de 4 caracteres e senhas não alfanuméricas devem ter escape adequado).
+        - container: MYSQL_ROOT_PASSWORD
+          description:
+            pt_br: Defina isso como senha root para instalação (mínimo de 4 caracteres e senhas não alfanuméricas devem ter escape adequado).
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: MariaDB
+x-casaos:
+  architectures:
+    - amd64
+  main: mariadb
+  author: DanielSantos
+  category: Database
+  developer: DanielSantos
+  store_app_id: mariadb
+  port_map: "8013"
+  description:
+    pt_br:
+      MariaDB Server é um dos servidores de banco de dados mais populares do mundo.
+       É feito pelos desenvolvedores originais do MySQL e tem garantia de permanecer
+       de código aberto. Usuários notáveis incluem Wikipedia, DBS Bank e ServiceNow.
+
+      A intenção também é manter alta compatibilidade com o MySQL, garantindo uma
+       equivalência binária da biblioteca e correspondência exata com APIs e comandos
+       do MySQL. Os desenvolvedores do MariaDB continuam desenvolvendo novos recursos 
+       e melhorando o desempenho para melhor atender seus usuários. 
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/MariaDB/icon.png
+  tagline:
+    pt_br: MariaDB Server é um banco de dados relacional de código aberto de alto desempenho, bifurcado do MySQL.
+  tips:
+    before_install:
+      pt_br: |
+        Usuário padrão: `casaos`
+        Senha padrão: `casaos`
+
+        Senha root padrão: `casaos`
+  title:
+    custom: ""
+    pt_br: MariaDB

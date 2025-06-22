@@ -1,0 +1,38 @@
+[
+  {
+    "appid": "nextcloud"
+  },
+  {
+    "appid": "wordpress"
+  },
+  {
+    "appid": "pihole-unbound"
+  },
+  {
+    "appid": "humhub"
+  },
+  {
+    "appid": "2fauth"
+  },
+  {
+    "appid": "filebrowser"
+  },
+  {
+    "appid": "netdata"
+  },
+  {
+    "appid": "phpmyadmin"
+  },
+  {
+    "appid": "portainer"
+  },
+  {
+    "appid": "qbittorrent"
+  },
+  {
+    "appid": "uptimekuma"
+  },
+  {
+    "appid": "openspeedtest"
+  }
+]

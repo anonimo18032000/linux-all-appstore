@@ -1,0 +1,63 @@
+name: openspeedtest
+services:
+  openspeedtest:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: openspeedtest/latest:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    network_mode: bridge
+    ports:
+      - target: 3000
+        published: "8011"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/var/www/html
+        target: /var/www/html
+    x-casaos:
+      ports:
+        - container: "3000"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: OpenSpeedTest
+x-casaos:
+  architectures:
+    - amd64
+  main: openspeedtest
+  author: DanielSantos
+  category: Utilities
+  developer: OpenSpeedTest
+  store_app_id: openspeedtest
+  port_map: "8011"
+  description:
+    pt_br: Um aplicativo para iniciar um servidor de teste de velocidade de rede HTML5. 
+      Você pode testar a velocidade de download e upload de qualquer dispositivo em sua rede 
+      com um navegador da web que seja IE10 ou superior.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/OpenSpeedTest/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/OpenSpeedTest/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/OpenSpeedTest/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/OpenSpeedTest/screenshot-3.png
+  tagline:
+    pt_br: Servidor de teste de velocidade de rede HTML5.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/OpenSpeedTest/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: OpenSpeedTest

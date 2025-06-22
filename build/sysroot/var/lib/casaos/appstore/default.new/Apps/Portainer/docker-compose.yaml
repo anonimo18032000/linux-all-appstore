@@ -1,0 +1,73 @@
+name: portainer
+services:
+  portainer:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: portainer/portainer-ce:2.21.1
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    network_mode: bridge
+    ports:
+      - target: 9000
+        published: "8017"
+        protocol: tcp
+      - target: 9443
+        published: "8018"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID
+        target: /data
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    x-casaos:
+      ports:
+        - container: "9000"
+          description:
+            pt_br: Porta HTTP WebUI.
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /data
+          description:
+            pt_br: Diretório de dados do Portainer.
+    container_name: Portainer
+x-casaos:
+  architectures:
+    - amd64
+  main: portainer
+  author: DanielSantos
+  category: Utilities
+  developer: Portainer
+  store_app_id: portainer
+  port_map: "8018"
+  scheme: https
+  description:
+    pt_br: Portainer é uma UI de gerenciamento leve que permite que você 
+      gerencie facilmente seus ambientes Docker. Ele foi projetado para ser
+      fácil de usar e oferece controle total sobre seus hosts e contêineres Docker.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Portainer/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Portainer/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Portainer/screenshot-2.png
+  tagline:
+    pt_br: Interface de gerenciamento leve do Docker
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Portainer/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: Portainer

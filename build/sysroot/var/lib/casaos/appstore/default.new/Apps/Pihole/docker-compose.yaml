@@ -1,0 +1,110 @@
+name: pihole
+services:
+  pihole:
+    environment:
+      PROXY_LOCATION: pi.hole
+      VIRTUAL_HOST: pi.hole
+      WEBPASSWORD: casaos
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: pihole/pihole:2024.07.0
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8014"
+        protocol: tcp
+      - target: 53
+        published: "53"
+        protocol: tcp
+      - target: 53
+        published: "53"
+        protocol: udp
+      - target: 67
+        published: "67"
+        protocol: udp
+      - target: 547
+        published: "547"
+        protocol: udp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/etc/pihole/
+        target: /etc/pihole
+      - type: bind
+        source: /DATA/AppData/$AppID/etc/dnsmasq.d/
+        target: /etc/dnsmasq.d
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+        - container: "53"
+          description:
+            pt_br: Porta DNS WebUI
+        - container: "67"
+          description:
+            pt_br: Porta DHCP WebUI
+        - container: "547"
+          description:
+            pt_br: Porta DHCP WebUI
+      envs:
+        - container: WEBPASSWORD
+          description:
+            pt_br: Senha de administrador do Pi-hole
+        - container: VIRTUAL_HOST
+          description:
+            pt_br: Nome de host personalizado do Pi-hole
+        - container: PROXY_LOCATION
+          description:
+            pt_br: Pi-hole PROXY_LOCATION
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /etc/pihole
+          description:
+            pt_br: Diretório /etc/pihole do Pi-hole.
+        - container: /etc/dnsmasq.d
+          description:
+            pt_br: Diretório /etc/dnsmasq.d do Pi-hole.
+    container_name: Pi-hole
+x-casaos:
+  architectures:
+    - amd64
+  main: pihole
+  author: DanielSantos
+  category: Network
+  developer: Pi-hole
+  store_app_id: pihole
+  port_map: "8014"
+  description:
+    pt_br: Automação residencial de código aberto que coloca o controle
+     local e a privacidade em primeiro lugar. Alimentado por uma comunidade mundial
+     de tinkerers e entusiastas DIY. Perfeito para executar em uma Raspberry Pi ou um servidor local.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-1.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-2.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-3.jpg
+  tagline:
+    pt_br: Bloqueio de anúncios em toda a rede
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/thumbnail.jpg
+  tips:
+    before_install:
+      pt_br: |
+        Senha padrão: `casaos`
+  title:
+    custom: ""
+    pt_br: Pi-hole
+  index: /admin

@@ -1,0 +1,81 @@
+name: phpmyadmin
+services:
+  phpmyadmin:
+    environment:
+      PMA_ARBITRARY: '0'
+      PMA_HOSTS: 'IP'
+      PMA_PMADB: 'casaos'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: phpmyadmin:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8013"
+        protocol: tcp
+    restart: always
+    x-casaos:
+      ports:
+          - container: "80"
+            description:
+              pt_br: Porta HTTP WebUI
+      envs:
+        - container: PMA_ARBITRARY
+          description:
+            pt_br: Recomendado valor 0
+        - container: PMA_HOSTS
+          description:
+            pt_br: Especifique o endereço IP
+        - container: PMA_PMADB
+          description:
+            pt_br: Especifique o nome do banco de dados
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: phpMyAdmin
+x-casaos:
+  architectures:
+    - amd64
+  main: phpmyadmin
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: phpmyadmin
+  port_map: "8013"
+  description:
+    pt_br:
+      phpMyAdmin é uma ferramenta de software livre escrita em PHP, destinada
+      a administrar o MySQL pela Web. phpMyAdmin suporta uma ampla gama de operações
+      em MySQL e MariaDB. Operações usadas com frequência (gerenciamento de bancos
+      de dados, tabelas, colunas, relações, índices, usuários, permissões, etc.)
+      podem ser executadas através da interface do usuário, enquanto você ainda 
+      tem a capacidade de executar diretamente qualquer instrução SQL.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/phpMyAdmin/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/phpMyAdmin/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/phpMyAdmin/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/phpMyAdmin/screenshot-3.png
+  tagline:
+    pt_br: phpMyAdmin – Uma interface web para MySQL e MariaDB.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/phpMyAdmin/thumbnail.png
+  tips:
+    before_install:
+      pt_br: |
+        Usuário padrão: `casaos`
+        Senha padrão: `casaos`
+
+        Senha root padrão: `casaos`
+  title:
+    custom: ""
+    pt_br: phpMyAdmin

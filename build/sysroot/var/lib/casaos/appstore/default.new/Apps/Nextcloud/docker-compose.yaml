@@ -1,0 +1,90 @@
+name: nextcloud
+services:
+  nextcloud:
+    environment:
+      PHP_MEMORY_LIMIT: '1G'
+      PHP_UPLOAD_MAX_FILESIZE: '8G'
+      PHP_POST_MAX_SIZE: '8G'
+      PHP_MAX_EXECUTION_TIME: '80'
+      BUFFER: '40'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: anonimo18032000/nextcloud:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 1G
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8009"
+        protocol: tcp
+      - target: 443
+        published: "8010"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/www
+        target: /var/www/nextcloud
+      - type: bind
+        source: /DATA/AppData/$AppID/data
+        target: /var/www/data
+      - type: bind
+        source: /DATA/AppData/$AppID/ssl
+        target: /etc/apache2/ssl
+      - type: bind
+        source: /DATA/AppData/$AppID/apache-config
+        target: /etc/apache2/sites-available
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+        - container: "443"
+          description:
+            pt_br: Porta HTTPS WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /var/www/nextcloud
+          description:
+            pt_br: Diretório do Nextcloud.
+    container_name: Nextcloud
+x-casaos:
+  architectures:
+    - amd64
+  main: nextcloud
+  author: DanielSantos
+  category: Cloud
+  developer: Nextcloud
+  store_app_id: nextcloud
+  port_map: "8010"
+  scheme: https
+  description:
+    pt_br: O Nextcloud coloca seus dados nas suas mãos, sob o seu controle. 
+      Armazene seus documentos, calendário, contatos e fotos em um servidor em casa,
+      em um de nossos provedores ou em um centro de dados que você confia.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/screenshot-3.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/screenshot-4.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/screenshot-5.png
+  tagline:
+    pt_br: A plataforma de produtividade que mantém você sob controle
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Nextcloud/thumbnail.png
+  tips:
+  title:
+    custom: ""
+    pt_br: Nextcloud

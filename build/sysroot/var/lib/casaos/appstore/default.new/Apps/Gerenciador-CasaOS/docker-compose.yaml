@@ -1,0 +1,87 @@
+name: gerenciador-casaos
+services:
+  gerenciador-casaos:
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      ADMIN_PASSWORD: casaos
+      ADMIN_USERNAME: casaos
+      FLASK_APP: app.py
+      FLASK_ENV: production
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: anonimo18032000/gerenciador-casaos:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 64M
+    network_mode: bridge
+    ports:
+      - target: 5000
+        published: "8004"
+        protocol: tcp
+    restart: always
+    privileged: true
+    volumes:
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /sys/fs/cgroup
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /var/lib/casaos/db
+        target: /var/lib/casaos/db
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /run/systemd/system
+        target: /run/systemd/system
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /var/run/dbus/system_bus_socket
+        target: /var/run/dbus/system_bus_socket
+        bind:
+          create_host_path: true
+
+    x-casaos:
+      ports:
+        - container: "5000"
+          description:
+            pt_br: Porta HTTP WebUI.
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: Gerenciador-CasaOS
+
+x-casaos:
+  architectures:
+    - amd64
+  main: gerenciador-casaos
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: gerenciador-casaos
+  port_map: "8004"
+  description:
+    pt_br: O Gerenciador-CasaOS tem a finalidade de mudar a senha de qualquer usuario do casaos
+            e também a possibilidade de adicionar novos usuarios.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Gerenciador-CasaOS/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Gerenciador-CasaOS/screenshot-1.png
+  tagline:
+    pt_br: Gerenciar usuários no CasaOS.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Gerenciador-CasaOS/screenshot-1.png
+  tips:
+  title:
+    custom: ""
+    pt_br: Gerenciador CasaOS

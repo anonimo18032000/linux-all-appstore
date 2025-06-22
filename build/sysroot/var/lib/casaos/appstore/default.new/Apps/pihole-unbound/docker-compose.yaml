@@ -1,0 +1,97 @@
+name: pihole-unbound
+services:
+  pihole-unbound:
+    environment:
+      WEBPASSWORD: 'casaos'
+      DNS1: '127.0.0.1#5353'
+      DNS2: 'no'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: bigbeartechworld/big-bear-pihole-unbound:2024.07.0
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 53
+        published: "53"
+        protocol: tcp
+      - target: 53
+        published: "53"
+        protocol: udp
+      - target: 67
+        published: "67"
+        protocol: udp
+      - target: 80
+        published: "8015"
+        protocol: tcp
+      - target: 443
+        published: "8016"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/etc
+        target: /etc/pihole/
+      - type: bind
+        source: /DATA/AppData/$AppID/dnsmasq.d
+        target: /etc/dnsmasq.d/
+    x-casaos:
+      ports:
+        - container: "53"
+          description:
+            pt_br: "Porto de contêineres: 53"
+        - container: "67"
+          description:
+            pt_br: "Porto de contêineres: 67"
+        - container: "80"
+          description:
+            pt_br: "Porto de contêineres: 80"
+        - container: "443"
+          description:
+            pt_br: "Porto de contêineres: 443"
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /etc/pihole
+          description:
+            pt_br: "Caminho do contêiner: /etc/pihole"
+        - container: /etc/dnsmasq.d
+          description:
+            pt_br: "Caminho do contêiner: /etc/dnsmasq.d"
+    container_name: Pi-hole-Unbound
+x-casaos:
+  architectures:
+    - amd64
+  main: pihole-unbound
+  author: DanielSantos
+  category: Network
+  developer: DanielSantos
+  store_app_id: pihole-unbound
+  port_map: "8016"
+  description:
+    pt_br: Pi-hole e Unbound Automação residencial de código aberto que coloca o controle
+     local e a privacidade em primeiro lugar. Alimentado por uma comunidade mundial
+     de tinkerers e entusiastas DIY. Perfeito para executar em uma Raspberry Pi ou um servidor local.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/Pihole-unbound/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-1.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-2.jpg
+    - https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/screenshot-3.jpg
+  tagline:
+    pt_br: Bloqueio de anúncios em toda a rede com servidor DNS
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/Pihole/thumbnail.jpg
+  index: /admin
+  title:
+    custom: ""
+    pt_br: Pi-hole-Unbound

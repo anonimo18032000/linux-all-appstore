@@ -1,0 +1,72 @@
+name: php-nginx
+services:
+  php-nginx:
+    environment:
+      WEBHOME: '/var/www/html'
+      TZ: $TZ
+      HOME: '/root'
+      PUID: $PUID
+      PGID: $PGID
+    image: shinsenter/phpfpm-nginx:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 256M
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8012"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/var/www/html
+        target: /var/www/html
+      - type: bind
+        source: /DATA/AppData/$AppID/certs
+        target: /etc/ssl/web
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: WEBHOME
+          description:
+            pt_br: especifique o Diretório do site.
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: HOME
+          description:
+            pt_br: especifique a pasta root (/root e a padrão).
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /var/www/html
+          description:
+            pt_br: Diretório de configuração do php-Nginx.
+    container_name: php-Nginx
+x-casaos:
+  architectures:
+    - amd64
+  main: php-nginx
+  author: DanielSantos
+  category: WEB
+  developer: php-Nginx
+  store_app_id: php-nginx
+  port_map: "8012"
+  description:
+    pt_br: Um aplicativo Docker que combina PHP-FPM e Nginx para servir sites PHP. 
+      Ele fornece uma configuração conveniente para executar aplicativos PHP com um servidor web Nginx.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/php-Nginx/icon.png
+  tagline:
+    pt_br: PHP-FPM e Nginx para sites PHP
+  tips:
+  title:
+    custom: ""
+    pt_br: php-Nginx

@@ -1,0 +1,95 @@
+name: qbittorrent
+services:
+  qbittorrent:
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: '002'
+    image: hotio/qbittorrent:release-5.0.1
+    deploy:
+      resources:
+        reservations:
+          memory: 512M
+    network_mode: bridge
+    ports:
+      - target: 8080
+        published: "8019"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/config
+        target: /config
+      - type: bind
+        source: /DATA/Downloads/
+        target: /app/qBittorrent/downloads
+    x-casaos:
+      ports:
+        - container: "8080"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: Execute o qBittorrent conforme especificado pela ID do usuário
+        - container: PGID
+          description:
+            pt_br: Execute o qBittorrent conforme especificado pela ID do Groupo
+        - container: UMASK
+          description:
+            pt_br: Execute o qBittorrent conforme especificado pela UMASK.
+      volumes:
+        - container: /config
+          description:
+            pt_br: Diretório de configuração do qBittorrent.
+        - container: /DATA
+          description:
+            pt_br: Diretório acessível do qBittorrent.
+    container_name: qBittorrent
+x-casaos:
+  architectures:
+    - amd64
+  main: qbittorrent
+  author: DanielSantos
+  category: Downloader
+  developer: qBittorrent
+  store_app_id: qbittorrent
+  port_map: "8019"
+  description:
+    pt_br: O objetivo do projeto qBittorrent é fornecer uma alternativa de software de código aberto ao µTorrent.
+
+      O qBittorrent transforma sua configuração de mídia doméstica 
+      com uma interface polida que lembra o µTorrent, sem os anúncios. Ao contrário das ferramentas de download 
+      tradicionais, ele oferece uma experiência simplificada, eficiente e sem anúncios. Isso o torna perfeito para 
+      aqueles que buscam uma maneira descomplicada de gerenciar e aproveitar suas coleções de mídia em casa.
+
+      Com o qBittorrent, você obtém acesso a um mecanismo de busca bem integrado e extensível, permitindo 
+      buscas simultâneas em vários sites de torrent e buscas específicas por categoria para livros, música 
+      e software. Seu suporte para feeds RSS com filtros avançados, links magnéticos, conexões criptografadas 
+      e muito mais garante que você tenha controle total sobre seus downloads. Disponível em todas as principais
+       plataformas e em cerca de 70 idiomas, o qBittorrent é versátil e acessível.
+
+      A implantação do qBittorrent em dispositivos de nuvem privada como o Zima oferece conveniência incomparável.
+       Aproveite armazenamento virtualmente ilimitado, privacidade aprimorada para seus dados e velocidades de rede
+        local que tornam o download e o streaming sem esforço. Esta configuração garante que sua biblioteca de mídia
+         esteja sempre na ponta dos seus dedos, de forma segura e rápida.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/qBittorrent/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/qBittorrent/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/qBittorrent/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/qBittorrent/screenshot-3.png
+  tagline:
+    pt_br: Downloader BitTorrent gratuito.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/qBittorrent/thumbnail.png
+  tips:
+    before_install:
+      pt_br: |
+        Usuario padrão: 'admin'
+        Senha padrão nos logs do qBittorrent
+  title:
+    custom: ""
+    pt_br: qBittorrent

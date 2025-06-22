@@ -1,0 +1,89 @@
+name: humhub
+services:
+  humhub:
+    environment:
+      PHP_MEMORY_LIMIT: '1G'
+      PHP_UPLOAD_MAX_FILESIZE: '8G'
+      PHP_POST_MAX_SIZE: '8G'
+      PHP_MAX_EXECUTION_TIME: '80'
+      BUFFER: '40'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: anonimo18032000/humhub:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 1G
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8005"
+        protocol: tcp
+      - target: 443
+        published: "8007"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/www
+        target: /var/www/humhub
+      - type: bind
+        source: /DATA/AppData/$AppID/ssl
+        target: /etc/apache2/ssl
+      - type: bind
+        source: /DATA/AppData/$AppID/apache-config
+        target: /etc/apache2/sites-available
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+        - container: "443"
+          description:
+            pt_br: Porta HTTPS WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /var/www/humhub
+          description:
+            pt_br: Diretório do HumHub.
+    container_name: HumHub
+x-casaos:
+  architectures:
+    - amd64
+  main: humhub
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: humhub
+  port_map: "8007"
+  scheme: https
+  description:
+    pt_br: HumHub é um software de código aberto de design modular e intuitivo,
+     usado principalmente como rede social, banco de dados de conhecimento,
+     intranet ou plataforma de informação e comunicação. Com o HumHub, ajudamos pessoas de todo o mundo a se conectarem,
+     manterem-se informadas, exibirem e compartilharem conteúdos de vários tipos, trocarem arquivos e se
+     comunicarem e colaborarem entre si. O software tem um design responsivo e funciona muito bem em 
+     diferentes dispositivos, incluindo smartphones e tablets. O HumHub está disponível em mais de 30 
+     idiomas e é usado em mais de 4.500 organizações em todo o mundo. 
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/HumHub/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/HumHub/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/HumHub/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/HumHub/screenshot-3.png
+  tagline:
+    pt_br: HumHub sua rede social.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/HumHub/screenshot-1.png
+  tips:
+  title:
+    custom: ""
+    pt_br: HumHub

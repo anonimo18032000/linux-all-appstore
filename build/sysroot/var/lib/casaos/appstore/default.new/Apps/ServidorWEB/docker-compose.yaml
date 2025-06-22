@@ -1,0 +1,80 @@
+name: servidorweb
+services:
+  servidorweb:
+    environment:
+      PHP_MEMORY_LIMIT: '128M'
+      PHP_UPLOAD_MAX_FILESIZE: '512M'
+      PHP_POST_MAX_SIZE: '512M'
+      PHP_MAX_EXECUTION_TIME: '30'
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    image: anonimo18032000/servidorweb:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 80
+        published: "8020"
+        protocol: tcp
+      - target: 443
+        published: "8021"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID/site
+        target: /var/www/site
+      - type: bind
+        source: /DATA/AppData/$AppID/ssl
+        target: /etc/apache2/ssl
+      - type: bind
+        source: /DATA/AppData/$AppID/apache-config
+        target: /etc/apache2/sites-available
+    x-casaos:
+      ports:
+        - container: "80"
+          description:
+            pt_br: Porta HTTP WebUI
+        - container: "443"
+          description:
+            pt_br: Porta HTTPS WebUI
+      envs:
+        - container: TZ
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+      volumes:
+        - container: /var/www/site
+          description:
+            pt_br: Diretório do ServidorWEB.
+    container_name: ServidorWEB
+x-casaos:
+  architectures:
+    - amd64
+  main: servidorweb
+  author: DanielSantos
+  category: WEB
+  developer: DanielSantos
+  store_app_id: servidorweb
+  port_map: "8021"
+  scheme: https
+  description:
+    pt_br: Um aplicativo Docker que combina PHP e Apache2 para servir sites. 
+      Ele fornece uma configuração conveniente para executar aplicativos PHP com um servidor web Apache2.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/ServidorWEB/icon.ico
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/ServidorWEB/screenshot-1.png
+  tagline:
+    pt_br: ServidorWEB com Apache2 e PHP.
+  tips:
+  title:
+    custom: ""
+    pt_br: ServidorWEB

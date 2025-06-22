@@ -1,0 +1,88 @@
+name: 2fauth
+services:
+  2fauth:
+    environment:
+      DB_CONNECTION: 'mysql'
+      DB_HOST: 'IP'
+      DB_PORT: '3306'
+      DB_DATABASE: '2fauth'
+      DB_USERNAME: 'casaos'
+      DB_PASSWORD: 'casaos'
+      APP_TIMEZONE: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      APP_URL: ''
+    image: 2fauth/2fauth:latest
+    deploy:
+      resources:
+        reservations:
+          memory: 128M
+    network_mode: bridge
+    ports:
+      - target: 8000
+        published: "8001"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/$AppID
+        target: /2fauth
+    x-casaos:
+      ports:
+        - container: "8000"
+          description:
+            pt_br: Porta HTTP WebUI
+      envs:
+        - container: DB_CONNECTION
+          description:
+            pt_br: mysql ou mariadb
+        - container: DB_HOST
+          description:
+            pt_br: Especifique o endereço IP
+        - container: DB_PORT
+          description:
+            pt_br: Especifique a porta (padrão 3306)
+        - container: DB_DATABASE
+          description:
+            pt_br: Especifique o nome do banco de dados
+        - container: DB_USERNAME
+          description:
+            pt_br: Especifique o usuario do banco de dados
+        - container: DB_PASSWORD
+          description:
+            pt_br: Especifique a senha do banco de dados
+        - container: APP_TIMEZONE
+          description:
+            pt_br: especifique um fuso horário a ser usado, veja esta lista.
+        - container: PUID
+          description:
+            pt_br: para ID do usuário
+        - container: PGID
+          description:
+            pt_br: para GroupID
+    container_name: 2FAuth
+x-casaos:
+  architectures:
+    - amd64
+  main: 2fauth
+  author: DanielSantos
+  category: Utilities
+  developer: DanielSantos
+  store_app_id: 2fauth
+  port_map: "8001"
+  description:
+    pt_br:
+      2FAuth é uma alternativa auto-hospedada baseada na web 
+      aos geradores de códigos de uso único (OTP) como o 
+      Google Authenticator, projetados para dispositivos móveis e desktop.
+  icon: https://gdinformaticasdp.com.br/linux/casaos/img/2FAuth/icon.png
+  screenshot_link:
+    - https://gdinformaticasdp.com.br/linux/casaos/img/2FAuth/screenshot-1.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/2FAuth/screenshot-2.png
+    - https://gdinformaticasdp.com.br/linux/casaos/img/2FAuth/screenshot-3.png
+  tagline:
+    pt_br: Um aplicativo da web para gerenciar suas contas de autenticação de dois fatores (2FA) e gerar seus códigos de segurança.
+  thumbnail: https://gdinformaticasdp.com.br/linux/casaos/img/2FAuth/thumbnail.png
+  title:
+    custom: ""
+    pt_br: 2FAuth
